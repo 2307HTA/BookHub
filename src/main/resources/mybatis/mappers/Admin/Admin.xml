@@ -18,3 +18,10 @@
         WHERE
             ADMIN_ID = #{value}
     </select>
+
+    <insert id="join" parameterType="com.example.bookhub.admin.vo.Admin">
+        INSERT INTO ADMIN(ADMIN_ID, ADMIN_PW, ADMIN_EAMIL, ADMIN_TEL)
+        VALUES #{id}, #{password}, #{email}, #{tel}
+    </insert>
+
+</mapper>

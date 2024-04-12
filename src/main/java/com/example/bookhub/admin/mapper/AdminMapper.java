@@ -7,4 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface AdminMapper {
 
     Admin getAdmin(String id);
+    void join(Admin admin);
 }
