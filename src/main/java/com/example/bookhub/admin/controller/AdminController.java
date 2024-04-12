@@ -35,11 +35,11 @@ public class AdminController {
         return "admin/home";
     }
 
-//    @GetMapping("/signup")
-//    public String signup(Model model){
-//        model.addAttribute("adminRegisterForm", new AdminRegisterForm());
-//        return "admin/login";
-//    }
+    @GetMapping("/signup")
+    public String signup(Model model){
+        model.addAttribute("adminRegisterForm", new AdminRegisterForm());
+        return "admin/login";
+    }
 
     @PostMapping("/signup")
     public String signup(AdminRegisterForm form, BindingResult error, RedirectAttributes redirect){

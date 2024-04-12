@@ -9,8 +9,6 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@Builder
-@ToString
 public class AdminRegisterForm {
 
     private String id;
