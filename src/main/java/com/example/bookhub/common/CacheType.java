@@ -18,7 +18,9 @@ public enum CacheType {
     AVERAGE_RATE("dashBoardMapper.averageRate", 60, 10000 ),
     NOANSWER_RATIO("dashBoardMapper.noAnswerRatio", 60, 10000 ),
     ANSWER_RATIO("dashBoardMapper.answerRatio", 60, 10000 ),
+    FAQ_FINDALL("FaqMapper.findAllFaq", 60, 10000),
     GET_RATIO("dashBoardMapper.getRatios", 60, 10000 );
+
 
 
     private final String cacheName;
