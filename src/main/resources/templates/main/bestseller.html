@@ -20,41 +20,33 @@
         <!-- Sidebar -->
         <div class="sidebar col-2">
             <!-- 베스트셀러 -->
-                <h5 class="fw-bold">베스트셀러</h5>
             <div id="period">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <a href="#" class="card-link" data-period="3"><strong>종합 베스트</strong></a>
-                        </h5>
-
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <a href="#" class="card-link" data-period="1">주간</a>
+                <div class="sidebarcard" id="maintitle">
+                    <div class="card-body mb-3 mt-3"  >
+                        <h5 class="card-title" >
+                            <a href="#" class="card-link ms-4" data-period="3"><strong>종합 베스트</strong></a>
                         </h5>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-body">
+                <div class="sidebarcard" id="subtitle">
+                    <div class="card-body mb-3 mt-3 ">
                         <h5 class="card-title">
-                            <a href="#" class="card-link" data-period="2">월간</a>
+                            <a href="#" class="card-link ms-4" data-period="1">주간</a>
                         </h5>
                     </div>
-                </div>
-                <div class="card">
-                    <div class="card-body">
+                    <div class="card-body mb-3 mt-3">
                         <h5 class="card-title">
-                            <a href="#" class="card-link" data-period="3">연간</a>
+                            <a href="#" class="card-link ms-4" data-period="2">월간</a>
                         </h5>
                     </div>
-                </div>
-                <div class="card">
-                    <div class="card-body">
+                    <div class="card-body mb-3 mt-3">
                         <h5 class="card-title">
-                            <a href="#" class="card-link" data-period="4">실시간 베스트</a>
+                            <a href="#" class="card-link ms-4" data-period="3">연간</a>
+                        </h5>
+                    </div>
+                    <div class="card-body mb-3">
+                        <h5 class="card-title">
+                            <a href="#" class="card-link ms-4" data-period="4">실시간 베스트</a>
                         </h5>
                     </div>
                 </div>
@@ -68,7 +60,7 @@
 
         <!--카테고리 선택 - 전체, 소설, 참고서, 사회과학 ,,, 등등등-->
         <div class="col-8 mb-5" >
-            <h1 class="mb-3">국내도서</h1>
+            <h1 class="mb-3">베스트셀러</h1>
             <ul id="cateKeyword">
                 <a href="#" data-cateKeyword="1"><span class="catebadge rounded-pill text-bg-light me-5">전체</span></a>
                 <a href="#" data-cateKeyword="3"><span class="catebadge rounded-pill text-bg-light me-5">소설</span></a>
@@ -118,9 +110,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#" data-sort="3">평점순</a>
                         </li>
+                        <!--
                         <li class="nav-item">
                             <a class="nav-link" href="#" data-sort="4">리뷰순</a>
                         </li>
+                        -->
                     </ul>
                 </div>
 
@@ -136,8 +130,7 @@
                         <li><a class="dropdown-item" href="#" data-pubDate="5">출간일 24주 이내</a></li>
                     </ul>
                 </div>
-
-            </div>
+                </div>
             </div>
 
             <!-- 페이지네이션 및 버튼 -->
@@ -197,8 +190,9 @@
                     </div>
                     <div >
                         <!-- 책 이미지 -->
-                        <a href="#">
-                            <img th:src="${book.cover}" class="card-img-top" alt="책 사진">
+                        <a th:href="@{/product/book/detail(bookNo=${book.no})}">
+                            <img th:if="${ book.cover != 'default.png'}" th:src="${book.cover}" class="card-img-top" alt="책 사진">
+                            <img th:if="${book.cover == 'default.png'}" src="/image/main/default.png" class="card-img-top" alt="책 사진">
                         </a>
                     </div>
                     <div class="card-body col-12">
@@ -209,9 +203,7 @@
                             <!-- 책 제목 -->
                             <h5 class="card-title fw-bold"  th:text="${book.name}"></h5>
                             <!-- 저자 -->
-                           <!-- <div th:each="author : ${book.authors}">
-                                <p class="card-text" th:text="${author.name + ' (' + author.type + ')'}">저자</p>
-                            </div> -->
+                           <p th:text="${book.authors}"></p>
                             <!--출판사-->
                             <p class="card-text">
                                 <span th:text="${book.publisherName}"></span>
@@ -228,7 +220,7 @@
                             <p class="card-text" th:text="${book.description}" id="txt_post"></p>
                             <p class="card-text">
                                 <i class="fas fa-star"></i>
-                                9.8
+                                <span th:text="${book.averageRating}"></span>
                             </p>
                         </div>
                         </a>

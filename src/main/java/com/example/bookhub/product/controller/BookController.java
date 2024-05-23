@@ -8,6 +8,7 @@ import com.example.bookhub.product.service.ReviewService;
 import com.example.bookhub.product.service.WishListService;
 import com.example.bookhub.product.vo.BookAuthor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -60,5 +61,12 @@ public class BookController {
     @PostMapping("/{bookNo}/increaseViewCount")
     public void increaseViewCount(@PathVariable long bookNo) {
         bookService.increaseBookViewCount(bookNo);
+    }
+
+    @GetMapping("/stock/{bookNo}/{count}")
+    @ResponseBody
+    public ResponseEntity<String> checkStock(@PathVariable("bookNo") long bookNo, @PathVariable("count") int count){
+        String checked = bookService.checkStock(bookNo, count);
+        return ResponseEntity.ok().body(checked);
     }
 }

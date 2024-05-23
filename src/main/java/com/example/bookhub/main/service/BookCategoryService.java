@@ -6,6 +6,7 @@ import com.example.bookhub.main.dto.SearchCriteria;
 import com.example.bookhub.main.mapper.BookCategory;
 import com.example.bookhub.product.vo.Category;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +14,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class CateListService {
+public class BookCategoryService {
 
     private final BookCategory bookCategory;
 
@@ -22,8 +23,10 @@ public class CateListService {
         return bookCategory.getCategory(categoryNo);
     }
 
-    public BookListDto cateBooks(SearchCriteria criteria) {
-        List<BookDto> cateBook = bookCategory.categoryList(criteria);
+    @Transactional(readOnly = true)
+    @Cacheable(value = "BookCategoryMapper.getBookCategoryList" , condition = "")
+    public BookListDto getCategoryBooks(SearchCriteria criteria) {
+        List<BookDto> cateBook = bookCategory.getBookCategoryList(criteria);
 
 
         int totalRows = bookCategory.count(criteria);

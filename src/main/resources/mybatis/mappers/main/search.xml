@@ -29,47 +29,52 @@
         <!--navbar 검색-->
         <if test="keyword != null">
             <choose>
-                <when test="opt == '국내'">
+                <when test="opt == '1'">
                     AND CATEGORY_NO IN (SELECT CATEGORY_NO FROM CATEGORY WHERE PARENT_CATEGORY_NO = 1)
-                        AND MATCH (BOOK_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
+                        AND (MATCH (BOOK_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
                         OR MATCH (AUTHOR_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
-                        OR MATCH (PUBLISHER_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
+                        OR MATCH (PUBLISHER_NAME) AGAINST (#{keyword} IN BOOLEAN MODE))
 
                 </when>
-                <when test="opt == '국외'">
+                <when test="opt == '2'">
                     AND CATEGORY_NO IN (SELECT CATEGORY_NO FROM CATEGORY WHERE PARENT_CATEGORY_NO = 1)
-                        AND MATCH (BOOK_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
-                        OR MATCH (AUTHOR_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
-                        OR MATCH (PUBLISHER_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
-
+                    AND MATCH (BOOK_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
+                </when>
+                <when test="opt == '3'">
+                    AND CATEGORY_NO IN (SELECT CATEGORY_NO FROM CATEGORY WHERE PARENT_CATEGORY_NO = 1)
+                    AND MATCH (AUTHOR_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
+                </when>
+                <when test="opt == '4'">
+                    AND CATEGORY_NO IN (SELECT CATEGORY_NO FROM CATEGORY WHERE PARENT_CATEGORY_NO = 1)
+                    MATCH (PUBLISHER_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
                 </when>
                 <otherwise>
                     AND CATEGORY_NO IN (SELECT CATEGORY_NO FROM CATEGORY WHERE PARENT_CATEGORY_NO = 1)
-                        AND MATCH (BOOK_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
+                        AND (MATCH (BOOK_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
                         OR MATCH (AUTHOR_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
-                        OR MATCH (PUBLISHER_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
+                        OR MATCH (PUBLISHER_NAME) AGAINST (#{keyword} IN BOOLEAN MODE))
 
                 </otherwise>
             </choose>
             <!--결과내 검색 -->
             <if test="extraKeyword != null">
                 AND CATEGORY_NO IN (SELECT CATEGORY_NO FROM CATEGORY WHERE PARENT_CATEGORY_NO = 1)
-                    AND MATCH (BOOK_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
-                    OR MATCH (AUTHOR_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
-                    OR MATCH (PUBLISHER_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)CH (PUBLISHER_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
+                AND (MATCH (BOOK_NAME) AGAINST (#{extraKeyword} IN BOOLEAN MODE)
+                OR MATCH (AUTHOR_NAME) AGAINST (#{extraKeyword} IN BOOLEAN MODE)
+                OR MATCH (PUBLISHER_NAME) AGAINST (#{extraKeyword} IN BOOLEAN MODE))
             </if>
         </if>
         <choose>
-            <when test="sort == 0">
+            <when test="sort == 1">
                 ORDER BY BOOK_SALES_VOLUME DESC
             </when>
-            <when test="sort == 1">
+            <when test="sort == 2">
                 ORDER BY BOOK_PUBLISHED_DATE DESC
             </when>
-            <when test="sort == 2 ">
+            <when test="sort == 3 ">
                 ORDER BY BOOK_AVERAGE_RATING DESC
             </when>
-            <when test="sort == 3">
+            <when test="sort == 4">
                 ORDER BY BOOK_TOTAL_REPLY_CNT DESC
             </when>
             <otherwise>
@@ -77,7 +82,8 @@
             </otherwise>
         </choose>
 
-        LIMIT #{offset}, #{recordSize};
+        <!-- LIMIT 절을 올바른 위치로 이동 -->
+        LIMIT #{offset}, #{recordSize}
 
     </select>
 
@@ -90,7 +96,7 @@
         <result column="BOOK_LIST_PRICE" property="price"/>
         <result column="BOOK_IMAGE_COVER" property="cover"/>
         <result column="PUBLISHER_NAME" property="publisherName"/>
-        <collection property="authors" ofType="com.example.bookhub.main.dto.BookAuthorDto">
+        <collection property="author" ofType="com.example.bookhub.main.dto.BookAuthorDto">
             <id column="AUTHOR_NO" property="no"></id>
             <result column="AUTHOR_NAME" property="name"></result>
             <result column="AUTHOR_TYPE" property="type"></result>
@@ -114,31 +120,39 @@
         <!-- 검색 조건 -->
         <if test="keyword != null">
             <choose>
-                <when test="opt == '국내'">
+                <when test="opt == '1'">
                     AND CATEGORY_NO IN (SELECT CATEGORY_NO FROM CATEGORY WHERE PARENT_CATEGORY_NO = 1)
-                    AND MATCH (BOOK_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
-                    AND MATCH (AUTHOR_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
-                    AND MATCH (PUBLISHER_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
+                    AND (MATCH (BOOK_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
+                    OR MATCH (AUTHOR_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
+                    OR MATCH (PUBLISHER_NAME) AGAINST (#{keyword} IN BOOLEAN MODE))
 
                 </when>
-                <when test="opt == '국외'">
-                    AND CATEGORY_NO IN (SELECT CATEGORY_NO FROM CATEGORY WHERE PARENT_CATEGORY_NO = 2)
+                <when test="opt == '2'">
+                    AND CATEGORY_NO IN (SELECT CATEGORY_NO FROM CATEGORY WHERE PARENT_CATEGORY_NO = 1)
                     AND MATCH (BOOK_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
+                </when>
+                <when test="opt == '3'">
+                    AND CATEGORY_NO IN (SELECT CATEGORY_NO FROM CATEGORY WHERE PARENT_CATEGORY_NO = 1)
                     AND MATCH (AUTHOR_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
-                    AND MATCH (PUBLISHER_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
+                </when>
+                <when test="opt == '4'">
+                    AND CATEGORY_NO IN (SELECT CATEGORY_NO FROM CATEGORY WHERE PARENT_CATEGORY_NO = 1)
+                    MATCH (PUBLISHER_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
                 </when>
                 <otherwise>
-                    AND MATCH (BOOK_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
-                    AND MATCH (AUTHOR_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
-                    AND MATCH (PUBLISHER_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
+                    AND CATEGORY_NO IN (SELECT CATEGORY_NO FROM CATEGORY WHERE PARENT_CATEGORY_NO = 1)
+                    AND (MATCH (BOOK_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
+                    OR MATCH (AUTHOR_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
+                    OR MATCH (PUBLISHER_NAME) AGAINST (#{keyword} IN BOOLEAN MODE))
 
                 </otherwise>
             </choose>
             <!--결과내 검색 -->
             <if test="extraKeyword != null">
-                AND MATCH (BOOK_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
-                AND MATCH (AUTHOR_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
-                AND MATCH (PUBLISHER_NAME) AGAINST (#{keyword} IN BOOLEAN MODE)
+                AND CATEGORY_NO IN (SELECT CATEGORY_NO FROM CATEGORY WHERE PARENT_CATEGORY_NO = 1)
+                AND (MATCH (BOOK_NAME) AGAINST (#{extraKeyword} IN BOOLEAN MODE)
+                OR MATCH (AUTHOR_NAME) AGAINST (#{extraKeyword} IN BOOLEAN MODE)
+                OR MATCH (PUBLISHER_NAME) AGAINST (#{extraKeyword} IN BOOLEAN MODE))
             </if>
         </if>
     </select>

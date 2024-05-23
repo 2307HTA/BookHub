@@ -11,7 +11,7 @@ public interface RecommendBookMapper {
      * 추천책 리스트 조회
      * @return 결과 리스트
      */
-    List<BookDto> recoBookList(SearchCriteria criteria);
+    List<BookDto> getRecommendBookList(SearchCriteria criteria);
 
     /**
      *

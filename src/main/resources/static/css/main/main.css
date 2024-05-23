@@ -151,4 +151,10 @@
 
 .card-title{
     text-align: center;
+    color: black;
+
 }
+.card-title a{
+    text-decoration: none; /* 밑줄 없애기 */
+}
+

@@ -6,16 +6,16 @@
     <sql id="where">
         <where>
             <!-- 검색어 -->
-            <if test="filter.opt != null">
+            <if test="filter.opt != null and filter.keyword != ''">
                 <choose>
                     <when test="filter.opt == 'writer'">
                         A.ADMIN_ID = #{filter.keyword}
                     </when>
                     <when test="filter.opt == 'title'">
-                        AND N.NOTICE_TITLE LIKE CONCAT('%', #{filter.keyword}, '%')
+                        AND MATCH (N.NOTICE_TITLE) AGAINST (CONCAT('+', #{filter.keyword}, '*') IN BOOLEAN MODE)
                     </when>
                     <when test="filter.opt == 'content'">
-                        AND N.NOTICE_CONTENT LIKE CONCAT('%', #{filter.keyword}, '%')
+                        AND MATCH (N.NOTICE_CONTENT) AGAINST (CONCAT('+', #{filter.keyword}, '*') IN BOOLEAN MODE)
                     </when>
                 </choose>
             </if>
@@ -95,13 +95,13 @@
 
             <choose>
                     <when test="sort == 'recentlyCreated'">
-                        ORDER BY N.NOTICE_CREATED_DATE DESC
+                        ORDER BY N.NOTICE_CREATED_DATE DESC, NOTICE_NO DESC
                     </when>
                     <when test="sort == 'recentlyUpdated'">
-                        ORDER BY N.NOTICE_UPDATED_DATE DESC
+                        ORDER BY N.NOTICE_UPDATED_DATE DESC, NOTICE_NO DESC
                     </when>
                     <when test="sort == 'important'">
-                        ORDER BY N.NOTICE_IMPORTANT_YN DESC
+                        ORDER BY N.NOTICE_IMPORTANT_YN DESC, NOTICE_NO DESC
                     </when>
             </choose>
 
@@ -181,19 +181,20 @@
                     BookHub.NOTICE
         WHERE
                     NOTICE_NO BETWEEN (#{postNo} - 5) AND (#{postNo} + 5)
+                    AND NOTICE_DELETED_YN = "N"
 
-                    <if test="filter.opt != null">
+                    <if test="filter.opt != null and filter.keyword != ''">
                         <choose>
                             <when test="filter.opt == 'title'">
-                                AND NOTICE_TITLE LIKE CONCAT('%', #{filter.keyword}, '%')
+                                AND MATCH (NOTICE_TITLE) AGAINST (CONCAT('+', #{filter.keyword}, '*') IN BOOLEAN MODE)
                             </when>
                             <when test="filter.opt == 'content'">
-                                AND NOTICE_CONTENT LIKE CONCAT('%', #{filter.keyword}, '%')
+                                AND MATCH (NOTICE_CONTENT) AGAINST (CONCAT('+', #{filter.keyword}, '*') IN BOOLEAN MODE)
                             </when>
                         </choose>
                     </if>
         ORDER BY
                     NOTICE_NO DESC
-        </select>
+    </select>
 
 </mapper>

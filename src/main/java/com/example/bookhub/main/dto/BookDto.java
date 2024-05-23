@@ -17,7 +17,8 @@ public class BookDto {
     private String cover;
     private String publisherName;
     private String categoryName;
-    private List<BookAuthorDto> authors;
+    private List<BookAuthorDto> author;
+    private String authors;
     private float averageRating;
     private int count;
 }

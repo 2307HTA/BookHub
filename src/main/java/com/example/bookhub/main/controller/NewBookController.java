@@ -18,7 +18,7 @@ public class NewBookController {
 
     @GetMapping("/main/newbook")
     public String newBook(SearchCriteria searchCriteria, Model model) { // Model 객체를 메서드 파라미터로 추가
-        BookListDto dto = newBookService.newBooks(searchCriteria); // NewBookService의 인스턴스를 통해 newBooks 메서드 호출
+        BookListDto dto = newBookService.getNewBooks(searchCriteria); // NewBookService의 인스턴스를 통해 newBooks 메서드 호출
         model.addAttribute("book", dto.getBooks()); // 모델에 책 정보를 담아서 HTML로 전달
         model.addAttribute("criteria", dto.getCriteria());
         return "main/newList.html";

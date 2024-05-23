@@ -15,6 +15,6 @@ public interface CartMapper {
     void deleteBookByCartNo(long cartNo);
     void updateBookCountByCartNo(Map<String, Object> map);
     void createCart(Map<String, Object> map);
-    Optional<Long> selectCartNoByBookNoAndUserNo(Map<String, Object> map);
+    Optional<CartBookDto> getCartByBookNoAndUserNo(Map<String, Object> map);
     void increaseBookCountByCartNo(@Param("cartNo") long cartNo, @Param("count") int count);
 }

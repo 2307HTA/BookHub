@@ -10,8 +10,9 @@
                 A.AMOUNT
             FROM (
                      SELECT B.BOOK_NO, SUM(B.COUNT) AS AMOUNT
-                     FROM BUY A, BUY_BOOK B
-                     WHERE A.BUY_NO = B.BUY_NO
+                     FROM BUY A
+                              JOIN BUY_BOOK B ON A.BUY_NO = B.BUY_NO
+                     WHERE A.BUY_DATE >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH)
                      GROUP BY B.BOOK_NO
                      ORDER BY AMOUNT DESC
                          LIMIT 10
@@ -35,17 +36,20 @@
         </select>
 
         <select id="getRecoBook"  parameterType="com.example.bookhub.main.dto.SearchCriteria" resultMap="bookResultMap">
-        SELECT
-        A.BOOK_NO,
-        A.BOOK_NAME,
-        B.BOOK_IMAGE_COVER
-        FROM BOOK A, BOOK_IMAGES B
-        WHERE
-        A.BOOK_NO = B.BOOK_NO
-        AND
-        BOOK_PUBLISHED_DATE >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)
-        GROUP BY A.BOOK_NAME
-        LIMIT 8;
+            SELECT
+                A.BOOK_NO,
+                A.BOOK_NAME,
+                B.BOOK_IMAGE_COVER,
+                COUNT(C.USER_NO) AS WISHLIST_COUNT
+            FROM
+                BOOK A
+                    JOIN BOOK_IMAGES B ON A.BOOK_NO = B.BOOK_NO
+                    LEFT JOIN USER_WISHLIST C ON A.BOOK_NO = C.BOOK_NO
+            GROUP BY
+                A.BOOK_NO, A.BOOK_NAME, B.BOOK_IMAGE_COVER
+            ORDER BY
+                WISHLIST_COUNT DESC
+                LIMIT 8;
         </select>
 
         <select id="getBookViewCount"  parameterType="com.example.bookhub.main.dto.SearchCriteria" resultMap="bookResultMap">

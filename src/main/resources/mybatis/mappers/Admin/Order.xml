@@ -85,7 +85,7 @@
                 R.BUY_NO	    		                                                AS buyNo,
                 U.USER_NAME               	                                            AS userName,
                 (SELECT COUNT(*) FROM RETURN_BOOK RB WHERE RB.RETURN_NO = R.RETURN_NO)  AS buyCount,
-                R.RETURN_PRICE                                                          AS returnPrice,
+                R.RETURN_PRICE                                                          AS price,
                 R.RETURN_DATE                                                           AS returnDate,
                 R.RETURNED_DATE                                                         AS returnedDate
         FROM

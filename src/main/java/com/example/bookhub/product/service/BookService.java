@@ -34,4 +34,15 @@ public class BookService {
     public void increaseBookViewCount(long bookNo) {
         bookMapper.increaseBookViewCount(bookNo);
     }
+
+    public String checkStock(long bookNo, int count) {
+        String checked = "";
+        int stock = bookMapper.checkStock(bookNo);
+        if(stock - count < 0)
+            checked = "fail";
+        else if(stock - count >= 0)
+            checked = "pass";
+
+        return checked;
+    }
 }

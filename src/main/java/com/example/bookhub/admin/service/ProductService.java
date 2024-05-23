@@ -8,6 +8,7 @@ import com.example.bookhub.product.vo.Author;
 import com.example.bookhub.product.vo.Publisher;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,11 +29,13 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "publisher")
     public List<Publisher> getPublishers() {
         return productMapper.getPublishers();
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "author")
     public List<Author> getAuthors() {
         return productMapper.getAuthors();
     }

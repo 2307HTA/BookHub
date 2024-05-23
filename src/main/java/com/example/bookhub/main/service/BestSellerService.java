@@ -6,6 +6,7 @@ import com.example.bookhub.main.dto.SearchCriteria;
 import com.example.bookhub.main.mapper.BestSellerMapper;
 import com.example.bookhub.main.mapper.NewBookMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +18,9 @@ public class BestSellerService {
     private final BestSellerMapper bestSellerMapper;
 
     @Transactional(readOnly = true)
-    public BookListDto bestSeller(SearchCriteria criteria) {
-        List<BookDto> bestBook = bestSellerMapper.bestSeller(criteria);
+    @Cacheable(value = "BookSellerMapper.getBestSellerList" , condition = "")
+    public BookListDto getBestSeller(SearchCriteria criteria) {
+        List<BookDto> bestBook = bestSellerMapper.getBestSellerList(criteria);
         for (BookDto book : bestBook) {
             // book이 null이 아닌 경우에만 처리
             if (book != null) {

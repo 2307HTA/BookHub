@@ -21,7 +21,7 @@ public class DetailDashBoardController {
     @GetMapping("/dailyDash")
     public String dailyDash(){
 
-        return "/admin/dash/dailyDash";
+        return "admin/dash/dailyDash";
     }
 
     @RequestMapping("/getDetailPercent.do")
@@ -32,7 +32,7 @@ public class DetailDashBoardController {
 
     @GetMapping("/rangeDash")
     public String weekDash(){
-        return "/admin/dash/weekDash";
+        return "admin/dash/weekDash";
     }
 
     @RequestMapping("/getDetailRange.do")

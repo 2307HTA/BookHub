@@ -121,7 +121,7 @@ public class GiftController {
     public String receiver(GiftReceiverForm giftReceiverForm, Principal principal){
         giftService.updateGiftReceiver(giftReceiverForm, principal.getName());
 
-        return "/product/gift/success";
+        return "product/gift/success";
     }
 
 }

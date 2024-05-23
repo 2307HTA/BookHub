@@ -116,6 +116,7 @@ public class BoardController {
                              Model model) {
 
         filter.setBoardType("notice");
+        filter.setDeletedYN("N");
         int totalRows = boardService.getTotalRows(filter);
         Pagination pagination = new Pagination(page, totalRows, rows);
 
@@ -153,8 +154,8 @@ public class BoardController {
     // 조회수 증가시키고 상세화면으로 보냄(상세화면에서 새로고침 시 조회수 증가 방지하기 위함)
     @GetMapping("/notice/views")
     public String noticeViews(@RequestParam(name = "page", required = false, defaultValue = "1") int page,
-                              @RequestParam("opt") String opt,
-                              @RequestParam("keyword") String keyword,
+                              @RequestParam(name = "opt", required = false) String opt,
+                              @RequestParam(name = "keyword", required = false) String keyword,
                               @RequestParam("postNo") long postNo,
                               RedirectAttributes redirectAttributes) {
 

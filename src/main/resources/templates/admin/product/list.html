@@ -153,7 +153,9 @@
                 <div class="col-12 bg-light p-3 mb-3">
                     <input type="hidden" name="page"/>
                     <div class="my-3 d-flex justify-content-between">
-                        <div class="text-left">전체: <b th:text="${paging.totalRows}">n</b> 개 조회</div>
+                        <div class="text-left">전체: <b th:text="${#numbers.formatInteger(paging.totalRows, 1, 'COMMA')}">n</b>
+                            개 조회
+                        </div>
                         <div class="d-flex">
                             <!-- 조회 개수 설정 -->
                             <select class="form-control-sm me-2" th:field="*{rows}">
@@ -187,9 +189,11 @@
                             <button id="btn-delete" type="button" class="btn btn-outline-secondary btn-sm">선택 삭제
                             </button>
                         </div>
+                        <!--
                         <div class="text-end">
                             <button id="btn-exel" type="button" class="btn btn-outline-secondary btn-sm">엑셀</button>
                         </div>
+                        -->
                     </div>
 
                     <!-- 조회 리스트 -->

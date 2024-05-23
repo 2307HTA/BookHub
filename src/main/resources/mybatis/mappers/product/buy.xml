@@ -195,7 +195,7 @@
                 WHEN EXISTS (
                         SELECT 1
                         FROM BUY B, BUY_BOOK BB
-                        WHERE B.refund_yn != 'N'
+                        WHERE B.refund_yn != 'Y'
                 AND B.gift_yn != 'Y'
                 AND B.user_no = #{userNo}
                 AND B.buy_no = BB.buy_no

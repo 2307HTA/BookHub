@@ -5,7 +5,6 @@
 </th:block>
 
 <div layout:fragment="content" class="container-fluid">
-
     <div class="row">
         <!-- Sidebar -->
         <div class="sidebar col-2">
@@ -15,7 +14,7 @@
                 <div class="mb-4">
                     <input type="hidden" name="opt" th:value="${param.opt}">
                     <input type="hidden" name="keyword" th:value="${param.keyword}">
-                    <input type="hidden" name="sort" th:value="${#strings.defaultString(param.sort, '0')}"/>
+                    <input type="hidden" name="sort" th:value="${#strings.defaultString(param.sort, '1')}"/>
                     <input type="hidden" name="page" th:value="${#strings.defaultString(param.page, 1)}"/>
                     <input type="text" id="Search2_SearchWord" class="form-control border" placeholder="검색어 입력" name="extraKeyword" th:value="${param.extraKeyword}">
                 </div>
@@ -24,32 +23,46 @@
                 </div>
             </form>
             <!-- 결과내 검색 끝 -->
-
-
-
         </div>
         <!-- /Sidebar -->
 
         <!-- Main content -->
         <div class="col-10 mb-5">
-            <h1 class="mb-3">통합검색</h1>
-            <!--옵션선택? 판매량순, 출간일순, 평점순, 리뷰순 -->
-            <div class="searchSort mb-3">
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="#" data-sort="0">판매량순</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" data-sort="1">출간일순</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" data-sort="2">평점순</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" data-sort="3">리뷰순</a>
-                    </li>
-                </ul>
+            <!--옵션선택? 판매량순, 출시일순, 평점순, 리뷰순 -->
+            <div class = "row">
+                <div class="d-flex justify-content-between align-items-center mb-3 col-10" id="sort">
+                    <ul class="nav nav-tabs col-12">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="#" data-sort="1">판매량순</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-sort="2">출간일순</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-sort="3">평점순</a>
+                        </li>
+                        <!--
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-sort="4">리뷰순</a>
+                        </li>
+                        -->
+                    </ul>
+                </div>
+
+                <div class="btn-group col-2" id="pubDate" >
+                    <button type="button" class="pubdatebtn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        출간일
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" >
+                        <li><a class="dropdown-item" href="#" data-pubDate="1" >출간일 1주 이내</a></li>
+                        <li><a class="dropdown-item" href="#" data-pubDate="2">출간일 2주 이내</a></li>
+                        <li><a class="dropdown-item" href="#" data-pubDate="3">출간일 8주 이내</a></li>
+                        <li><a class="dropdown-item" href="#" data-pubDate="4">출간일 12주 이내</a></li>
+                        <li><a class="dropdown-item" href="#" data-pubDate="5">출간일 24주 이내</a></li>
+                    </ul>
+                </div>
             </div>
+
 
 
             <!-- 페이지네이션 및 버튼 -->
@@ -90,9 +103,9 @@
                     </nav>
                 </div>
                 <div class="col-5">
-                    <button type="button" class="btn me-2">전체선택</button>
-                    <button type="button" class="btn">장바구니 담기</button>
-                    <button type="button" class="btn">마이리스트 담기</button>
+                    <button type="button" class="btn-all-choice me-2 btn btn-outline-primary">전체선택</button>
+                    <button type="button" class="btn-add-cart me-2 btn btn-outline-primary" id="btn-add-cart">장바구니 담기</button>
+                    <button type="button" class="btn-add-wishlist btn btn-outline-primary" >위시리스트 담기</button>
                 </div>
             </div>
 
@@ -101,53 +114,52 @@
             </div>
 
             <!--상품 목록-->
-            <div class="card mb-5 col-12" th:each="book : ${book}">
-                <div class="ms-2">
-                    <button type="button" class="btn btn-sm rounded-circle" id="checkButton">
-                        <i class="bi bi-check"></i>
-                    </button>
-                </div>
-                <div >
-                    <!-- 책 이미지 -->
-                    <a href="#">
-                        <img th:src="${book.cover}" class="card-img-top" alt="책 사진">
-                    </a>
-                </div>
-                <div class="card-body col-12">
-                    <div class="text-section col-9">
-                        <!-- 책 제목 -->
-                        <h5 class="card-title fw-bold" th:text="${book.name}"></h5>
-                        <!-- 저자 -->
-                        <div th:each="author : ${book.authors}">
-                            <p class="card-text" th:text="${author.name + ' (' + author.type + ')'}">저자</p>
+            <form id="book-form">
+                <div class="card mb-5 col-12" th:each="book : ${book}">
+                    <div class="ms-2">
+                        <input type="checkbox" name="no" class="btn btn-sm rounded-circle" th:value="${book.no}" />
+                    </div>
+                    <div >
+                        <!-- 책 이미지 -->
+                        <a th:href="@{/product/book/detail(bookNo=${book.no})}">
+                            <img th:if="${ book.cover != 'default.png'}" th:src="${book.cover}" class="card-img-top" alt="책 사진">
+                            <img th:if="${book.cover == 'default.png'}" src="/image/main/default.png" class="card-img-top" alt="책 사진">
+                        </a>
+                    </div>
+                    <div class="card-body col-12">
+                        <div class="text-section col-9">
+                            <!-- 책 제목 -->
+                            <h5 class="card-title fw-bold" th:text="${book.name}"></h5>
+                            <!-- 저자 -->
+                            <p th:text="${book.authors}"></p>
+                            <!--출판사-->
+                            <p class="card-text">
+                                <span th:text="${book.publisherName}"></span>
+                            </p>
+                            <!-- 가격 -->
+                            <p class="card-text">
+                                <span th:text="${book.price} + '원'"></span>
+                            </p>
+                            <!-- 출판일 -->
+                            <p class="card-text">
+                                <span th:text="${book.publishedDate}"></span>
+                            </p>
+                            <!-- 책 설명 -->
+                            <p class="card-text" th:text="${book.description}" id="txt_post"></p>
+                            <p class="card-text">
+                                <i class="fas fa-star"></i>
+                                <span th:text="${book.averageRating}"></span>
+                            </p>
                         </div>
-                        <!--출판사-->
-                        <p class="card-text">
-                            <span th:text="${book.publisherName}"></span>
-                        </p>
-                        <!-- 가격 -->
-                        <p class="card-text">
-                            <span th:text="${book.price} + '원'"></span>
-                        </p>
-                        <!-- 출판일 -->
-                        <p class="card-text">
-                            <span th:text="${book.publishedDate}"></span>
-                        </p>
-                        <!-- 책 설명 -->
-                        <p class="card-text" th:text="${book.description}" id="txt_post"></p>
-                        <p class="card-text">
-                            <i class="fas fa-star"></i>
-                            9.8
-                        </p>
-                    </div>
-                    <div class="cta-section col-3">
-                        <i id="zzim" class="far fa-heart mb-3"></i>
-                        <a href="#" class="btn mb-3" id="cart">장바구니</a>
-                        <a href="#" class="btn" id="buyButton">바로구매</a>
-                    </div>
+                        <div class="cta-section col-3">
+                            <a th:href="@{/product/wishlist/add(no=${book.no})}" class="btn-add-wishlist2"><i id="wishList" class="far fa-heart" ></i></a>
+                            <a th:href="@{/product/cart/add(no=${book.no})}"class="btn-add-cart2 mb-3 btn btn-outline-primary" id="cart">장바구니</a>
+                            <a href="/product/buy" class="btn-buy btn btn-outline-primary" id="buyButton">바로구매</a>
+                        </div>
                     <div class="mt-3" style="border-top: 1.5px solid #FFFFFF; "></div>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>

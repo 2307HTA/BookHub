@@ -43,7 +43,7 @@
              where gift_no = (select GR.gift_no
                               from GIFT G, GIFT_RECEIVER GR
                               where G.gift_no = GR.gift_no
-                                and GR.gift_receiver_no = 16 )) as count,
+                                and GR.gift_receiver_no = #{giftReceiverNo} )) as count,
             A.author_name as authorName,
             P.publisher_name as publisherName,
             G.sender_name as senderName,

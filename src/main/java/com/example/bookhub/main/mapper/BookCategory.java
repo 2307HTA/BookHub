@@ -15,7 +15,7 @@ public interface BookCategory {
      * 각각의 카테고리에대한 리스트 조회
      * @return
      */
-    List<BookDto> categoryList(SearchCriteria criteria);
+    List<BookDto> getBookCategoryList(SearchCriteria criteria);
 
     /**
      *

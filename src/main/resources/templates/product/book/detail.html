@@ -44,7 +44,8 @@
             <div id="carouselExample" class="carousel slide" style="width: 300px; height: 500px; margin: 0 auto;" >
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img th:src="${book.imageCover}" class="d-block w-100" alt="...">
+                        <img th:if="${book.imageCover != 'default.png'}" th:src="${book.imageCover}" class="d-block w-100" alt="...">
+                        <img th:if="${book.imageCover == 'default.png'}" src="/image/main/default.png" class="d-block w-100" alt="...">
                     </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
@@ -72,16 +73,18 @@
                             <h6 class="my-0"><strong>가격</strong></h6>
                         </div>
                         <span>
+                            <span style="color: forestgreen">
                                 <span th:text="${#numbers.formatDecimal(book.discountRate * 100, 0, 0)}"></span>%
-                                <span><span th:text="${#numbers.formatDecimal(book.price * (1 - book.discountRate), 0, 0)}"></span>원</span>
-                                <span><span th:text="${book.price}"></span>원</span>
                             </span>
+                            <strong><span th:text="${#numbers.formatDecimal(book.price * (1 - book.discountRate), 0, 0)}"></span></strong>원
+                            <span th:text="${book.price}" style="text-decoration: line-through; color: grey"></span>원
+                        </span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-sm">
                         <div>
-                            <h6 class="my-0"><strong>적립/혜택</strong></h6>
+                            <h6 class="my-0"><strong>기본 적립/혜택</strong></h6>
                         </div>
-                        <span><span th:text="${#numbers.formatDecimal(book.price * 0.05, 0, 0)}"></span>P</span>
+                        <span><span th:text="${#numbers.formatDecimal(book.price * 0.01, 0, 0)}"></span>P</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-sm">
                         <div>
@@ -184,6 +187,9 @@
 
     <div class="col-12">
         <div id="div-reviews">
+            <div th:if="${#lists.size(reviewDtoList) == 0}" class="d-flex justify-content-center">
+                <h5 class="mt-5">작성된 리뷰가 없습니다</h5>
+            </div>
             <div th:each="review: ${reviewDtoList}">
                 <a th:id="|review_${review.reviewNo}|"></a>
                 <div class="row g-0 rounded overflow-hidden h-md-250 position-relative border review">
@@ -337,18 +343,21 @@
             </button>
             <button class="btn btn-outline-secondary me-3"
                     type="button" onclick="createOrIncreaseCart()"
-                    sec:authorize="isAuthenticated()">장바구니</button>
+                    sec:authorize="isAuthenticated()"
+                    th:attr="disabled=${book.stock == 0}">장바구니</button>
             <form method="post" action="/product/gift">
                 <input type="hidden" name="buyBookNoList" th:value="${book.bookNo}"/>
                 <input type="hidden" name="buyBookCountList" value=1 />
                 <button type="submit" class="btn btn-outline-success me-3"
-                        sec:authorize="isAuthenticated()">선물하기</button>
+                        sec:authorize="isAuthenticated()"
+                        th:attr="disabled=${book.stock == 0}">선물하기</button>
             </form>
             <form method="post" action="/product/buy/order">
                 <input type="hidden" name="buyBookNoList" th:value="${book.bookNo}"/>
                 <input type="hidden" name="buyBookCountList" value=1 />
                 <button type="submit" class="btn btn-outline-success me-3"
-                        sec:authorize="isAuthenticated()">바로 주문</button>
+                        sec:authorize="isAuthenticated()"
+                        th:attr="disabled=${book.stock == 0}">바로 주문</button>
             </form>
         </div>
     </nav>
@@ -628,9 +637,25 @@
         }
     })
 
-    $("#count-plus").click(function(event){
-        let prevCount = parseInt($("input[name=buyBookCountList]").val());
-        $("input[name=buyBookCountList]").val(prevCount + 1);
+    $("#count-plus").click(async function(event){
+
+        let prevVal = parseInt($("input[name=buyBookCountList]").val());
+        try {
+            let response = await fetch("/product/book/stock/" + bookNo + "/" + (prevVal + 1));
+            let checked = await response.text();
+            if (checked === "pass") {
+                // 성공 처리
+                let nowVal = prevVal + 1;
+                $("input[name=buyBookCountList]").val(nowVal);
+            } else {
+                // 실패 처리
+                alert("재고가 부족하여 수량을 증가시킬 수 없습니다");
+            }
+        } catch (error) {
+            console.error("네트워크 오류:", error);
+            // 실패 처리
+            console.log("수량 체크 실패");
+        }
     })
 
     // 장바구니 추가 시 모달
@@ -654,7 +679,11 @@
 
         let jsonData = await response.json();
 
-        await showAlertModal(jsonData.existOrNot);
+        if(jsonData.existOrNot === "fail")
+            alert("재고가 부족하여 장바구니에 추가할 수 없습니다.");
+        else{
+            showAlertModal(jsonData.existOrNot);
+        }
     }
 
     // 찜하기 토글 및 비동기
@@ -783,6 +812,28 @@
             return uri.replace(re, "$1" + key + "=" + value + "$2") + (parts.length > 1 ? "#" + parts[1] : "");
         } else {
             return uri + separator + key + "=" + value;
+        }
+    }
+
+    async function checkStock(){
+        let prevVal = parseInt($("input[name=buyBookCountList]").val());
+        try {
+            let response = await fetch("/product/book/stock/" + bookNo + "/" + (prevVal + 1));
+            let checked = await response.text();
+            if (checked === "pass") {
+                // 성공 처리
+                let nowVal = prevVal + 1;
+                $(this).siblings('input').val(nowVal);
+                updatePrices();
+                updateBookCount(cartNo, nowVal);
+            } else {
+                // 실패 처리
+                alert("수량 부족");
+            }
+        } catch (error) {
+            console.error("네트워크 오류:", error);
+            // 실패 처리
+            console.log("수량 체크 실패");
         }
     }
 

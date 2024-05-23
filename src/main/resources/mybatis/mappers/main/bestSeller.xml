@@ -2,9 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.bookhub.main.mapper.BestSellerMapper">
 
-
-
-    <select id="bestSeller" parameterType="com.example.bookhub.main.dto.SearchCriteria" resultMap="bookResultMap">
+    <select id="getBestSellerList" parameterType="com.example.bookhub.main.dto.SearchCriteria" resultMap="bookResultMap">
         SELECT *
         FROM (
         SELECT
@@ -17,14 +15,18 @@
         AND X.BOOK_NO = B.BOOK_NO) AUTHORS,
         C.PUBLISHER_NAME,
         B.BOOK_LIST_PRICE,
+        B.BOOK_AVERAGE_RATING,
         D.BOOK_IMAGE_COVER,
         B.CATEGORY_NO,
         F.CATEGORY_NAME,
         A.AMOUNT
         FROM (SELECT B.BOOK_NO, SUM(B.COUNT) AMOUNT
         FROM BUY A, BUY_BOOK B, BOOK C
-                    <where>AND A.BUY_DATE >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)<choose>
-                            <when test="period == 1 "></when>
+                    <where>A.BUY_DATE >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 YEAR)
+                        <choose>
+                            <when test="period == 1 ">
+                                AND A.BUY_DATE >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)
+                            </when>
                             <when test="period == 2 ">
                                 AND A.BUY_DATE >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH)
                             </when>
@@ -54,13 +56,12 @@
                   AND A.BUY_NO = B.BUY_NO
                   AND B.BOOK_NO = C.BOOK_NO
                   GROUP BY B.BOOK_NO
-                  ORDER BY AMOUNT DESC
-                  LIMIT 0, 100) A, BOOK B, PUBLISHER C, BOOK_IMAGES D,CATEGORY F
+                  ORDER BY AMOUNT DESC LIMIT 0, 100) A, BOOK B, PUBLISHER C, BOOK_IMAGES D,CATEGORY F
             WHERE A.BOOK_NO = B.BOOK_NO
             AND B.PUBLISHER_NO = C.PUBLISHER_NO
             AND B.BOOK_NO = D.BOOK_NO
             AND B.CATEGORY_NO = F.CATEGORY_NO
-            <choose>
+        <choose>
             <when test="sort == 1">
                 ORDER BY BOOK_SALES_VOLUME DESC
             </when>
@@ -92,11 +93,8 @@
         <result column="BOOK_IMAGE_COVER" property="cover"/>
         <result column="PUBLISHER_NAME" property="publisherName"/>
         <result column="CATEGORY_NAME" property="categoryName"/>
-        <collection property="authors" ofType="com.example.bookhub.main.dto.BookAuthorDto">
-            <id column="AUTHOR_NO" property="no"></id>
-            <result column="AUTHOR_NAME" property="name"></result>
-            <result column="AUTHOR_TYPE" property="type"></result>
-        </collection>
+        <result column="BOOK_AVERAGE_RATING" property="averageRating"/>
+        <result column="AUTHORS" property="authors" />
     </resultMap>
 
     <select id="count" parameterType="com.example.bookhub.main.dto.SearchCriteria" resultType="int">
@@ -138,7 +136,7 @@
     AND B.BOOK_NO = C.BOOK_NO
     GROUP BY B.BOOK_NO
     ORDER BY AMOUNT DESC
-    LIMIT #{offset}, #{recordSize}) A, BOOK B, PUBLISHER C, BOOK_IMAGES D
+    LIMIT 0, 100) A, BOOK B, PUBLISHER C, BOOK_IMAGES D
     WHERE A.BOOK_NO = B.BOOK_NO
     AND B.PUBLISHER_NO = C.PUBLISHER_NO
     AND B.BOOK_NO = D.BOOK_NO

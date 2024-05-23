@@ -181,7 +181,7 @@
                         <tr>
                             <td class="bg-light align-middle text-center" style="width: 250px;">할인율</td>
                             <td>
-                                <input type="number" th:field="*{discountRate}" class="form-control-sm price">
+                                <input type="text" th:field="*{discountRate}" class="form-control-sm price">
                                 <label for="sellingPrice" class="ms-5">판매가격</label>
                                 <input id="sellingPrice" type="number"
                                        th:value="${#numbers.formatInteger(product.listPrice * (1 - product.discountRate), 1, 'COMMA')}"
@@ -276,7 +276,7 @@
             let listPrice = parseFloat($("input[name='listPrice']").val());
 
             let sellingPrice = Math.round(listPrice * (1 - discountRate));
-            $("#sellingPrice").val(sellingPrice.toLocaleString());
+            $("#sellingPrice").val(sellingPrice);
         });
 
     });

@@ -5,6 +5,7 @@ import com.example.bookhub.main.dto.BookListDto;
 import com.example.bookhub.main.dto.SearchCriteria;
 import com.example.bookhub.main.mapper.RecommendBookMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,8 +16,9 @@ import java.util.List;
 public class RecommendBookService {
     private final RecommendBookMapper recommendBookMapper;
     @Transactional(readOnly = true)
-    public BookListDto recoBooks(SearchCriteria criteria) {
-        List<BookDto> newBook = recommendBookMapper.recoBookList(criteria);
+    @Cacheable(value = "RecommendBookMapper.getRecommendBookList" , condition = "")
+    public BookListDto getRecommendBooks(SearchCriteria criteria) {
+        List<BookDto> newBook = recommendBookMapper.getRecommendBookList(criteria);
 
         int totalRows = recommendBookMapper.count(criteria);
         criteria.setTotalRows(totalRows);

@@ -6,6 +6,7 @@ import com.example.bookhub.admin.vo.Category;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,11 +16,13 @@ public class CategoryService {
     private final CategoryMapper categoryMapper;
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "topCategory")
     public List<Category> getAllTopLevelCategories() {
         return categoryMapper.getAllTopLevelCategories();
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "secondCategory")
     public List<Category> getAllSecondLevelCategories() {
         return categoryMapper.getAllSecondLevelCategories();
     }

@@ -32,7 +32,7 @@ public class ReturnController {
         returnService.createRefund(returnForm, principal.getName());
 
         model.addAttribute("returnType", "환불");
-        return "/product/return/success";
+        return "product/return/success";
     }
 
     @GetMapping("/refund/approve/{returnNo}")
@@ -48,7 +48,7 @@ public class ReturnController {
         returnService.createExchange(returnForm, principal.getName());
 
         model.addAttribute("returnType", "교환");
-        return "/product/return/success";
+        return "product/return/success";
     }
 
 
