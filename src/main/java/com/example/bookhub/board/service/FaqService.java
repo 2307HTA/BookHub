@@ -24,7 +24,7 @@ public class FaqService {
      * @param page
      * @return
      */
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     @Cacheable(value = "FaqMapper.findAllFaq", condition = "")
     public FaqListDto getFaqList(int cat, String keyword, int page) {
 
@@ -43,7 +43,7 @@ public class FaqService {
      * @param categoryNo
      * @return
      */
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public FaqCategory getFaqCategoryByNo(Long categoryNo) {
         return faqMapper.getFaqCategoryByNo(categoryNo);
     }
@@ -53,7 +53,7 @@ public class FaqService {
      * @param no
      * @return
      */
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public Faq getFaqByNo(Long no) {
         return faqMapper.getFaqByNo(no);
     }
@@ -62,7 +62,7 @@ public class FaqService {
      * FAQ category 전체 조회
      * @return
      */
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public List<FaqCategory> findAllCategories() {
         return faqMapper.findAllCategories();
     }

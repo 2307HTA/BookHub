@@ -18,7 +18,7 @@ public class BookCategoryService {
 
     private final BookCategory bookCategory;
 
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public Category getCategory(int categoryNo) {
         return bookCategory.getCategory(categoryNo);
     }

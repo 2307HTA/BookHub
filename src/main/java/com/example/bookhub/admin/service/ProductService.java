@@ -8,7 +8,6 @@ import com.example.bookhub.product.vo.Author;
 import com.example.bookhub.product.vo.Publisher;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,24 +17,22 @@ public class ProductService {
 
     private final ProductMapper productMapper;
 
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public int getTotalRows(ProductFilter filter) {
         return productMapper.getTotalRows(filter);
     }
 
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public List<BookList> getBooks(ProductFilter filter, int offset, int limit, String sort) {
         return productMapper.getBooks(filter, offset, limit, sort);
     }
 
-    @Transactional(readOnly = true)
-    @Cacheable(value = "publisher")
+//    @Transactional(readOnly = true)
     public List<Publisher> getPublishers() {
         return productMapper.getPublishers();
     }
 
-    @Transactional(readOnly = true)
-    @Cacheable(value = "author")
+//    @Transactional(readOnly = true)
     public List<Author> getAuthors() {
         return productMapper.getAuthors();
     }
@@ -46,12 +43,12 @@ public class ProductService {
         }
     }
 
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public Product getProductByNo(Long productNo) {
         return productMapper.getProductByNo(productNo);
     }
 
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public Long getSuperCategoryNoBySubCategoryNo(Long categoryNo) {
         return productMapper.getSuperCategoryNoBySubCategoryNo(categoryNo);
     }

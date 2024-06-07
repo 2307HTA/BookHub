@@ -22,7 +22,7 @@ public class CartService {
     private final UserMapper userMapper;
     private final BookMapper bookMapper;
 
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public List<CartBookDto> findCartList(String userId){
         User user = userMapper.selectUserById(userId);
         return cartMapper.findCartList(user.getNo());
