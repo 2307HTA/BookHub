@@ -14,12 +14,12 @@ public class OrderService {
 
     private final OrderMapper orderMapper;
 
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public int getReturnTotalRows(OrderFilter filter) {
         return orderMapper.getReturnTotalRows(filter);
     }
 
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public List<Return> getReturns(OrderFilter filter, int offset, int limit, String sort) {
         return orderMapper.getReturns(filter, offset, limit, sort);
     }

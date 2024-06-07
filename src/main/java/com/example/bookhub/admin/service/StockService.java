@@ -16,12 +16,12 @@ public class StockService {
 
     private final StockMapper stockMapper;
 
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public int getTotalRows(StockFilter filter) {
         return stockMapper.getTotalRows(filter);
     }
 
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public List<Stock> getStockNotifications(StockFilter filter, int offset, int limit) {
         return stockMapper.getStockNotifications(filter, offset, limit);
     }

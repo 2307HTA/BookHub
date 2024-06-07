@@ -21,31 +21,21 @@
         </select>
 
         <select id="getNewBook"  parameterType="com.example.bookhub.main.dto.SearchCriteria" resultMap="bookResultMap">
-            SELECT
-                A.BOOK_NO,
-                A.BOOK_NAME,
-                B.BOOK_IMAGE_COVER
-            FROM BOOK A, BOOK_IMAGES B
-            WHERE
-                A.BOOK_NO = B.BOOK_NO
-              AND
-                BOOK_PUBLISHED_DATE >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)
-            GROUP BY A.BOOK_NAME
+            SELECT A.BOOK_NO, A.BOOK_NAME, B.BOOK_IMAGE_COVER
+            FROM BOOK A
+                     JOIN BOOK_IMAGES B ON A.BOOK_NO = B.BOOK_NO
+            WHERE BOOK_PUBLISHED_DATE >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)
+            GROUP BY A.BOOK_NO, A.BOOK_NAME, B.BOOK_IMAGE_COVER
                 LIMIT 8;
         </select>
 
         <select id="getRecoBook"  parameterType="com.example.bookhub.main.dto.SearchCriteria" resultMap="bookResultMap">
-        SELECT
-        A.BOOK_NO,
-        A.BOOK_NAME,
-        B.BOOK_IMAGE_COVER
-        FROM BOOK A, BOOK_IMAGES B
-        WHERE
-        A.BOOK_NO = B.BOOK_NO
-        AND
-        BOOK_PUBLISHED_DATE >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)
-        GROUP BY A.BOOK_NAME
-        LIMIT 8;
+            SELECT A.BOOK_NO, A.BOOK_NAME, B.BOOK_IMAGE_COVER
+            FROM BOOK A, BOOK_IMAGES B
+            WHERE A.BOOK_NO = B.BOOK_NO
+              AND BOOK_PUBLISHED_DATE >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)
+            GROUP BY A.BOOK_NO, A.BOOK_NAME, B.BOOK_IMAGE_COVER
+                LIMIT 8;
         </select>
 
         <select id="getBookViewCount"  parameterType="com.example.bookhub.main.dto.SearchCriteria" resultMap="bookResultMap">
@@ -58,7 +48,10 @@
                 BOOK A
                     JOIN BOOK_IMAGES B ON A.BOOK_NO = B.BOOK_NO
             GROUP BY
-                A.BOOK_NAME
+                A.BOOK_NO,
+                A.BOOK_NAME,
+                B.BOOK_IMAGE_COVER,
+                A.BOOK_VIEW_COUNT
             ORDER BY
                 SUM(A.BOOK_VIEW_COUNT) DESC
                 LIMIT 10;

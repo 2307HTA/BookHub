@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class RecommendBookService {
     private final RecommendBookMapper recommendBookMapper;
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public BookListDto recoBooks(SearchCriteria criteria) {
         List<BookDto> newBook = recommendBookMapper.recoBookList(criteria);
 
