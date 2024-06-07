@@ -11,7 +11,7 @@ public interface BestSellerMapper {
      * 검색 리스트 조회
      * @return 검색결과 리스트
      */
-    List<BookDto> bestSeller(SearchCriteria criteria);
+    List<BookDto> getBestSellerList(SearchCriteria criteria);
 
     /**
      *

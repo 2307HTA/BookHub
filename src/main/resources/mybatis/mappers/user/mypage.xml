@@ -7,6 +7,7 @@
     from COUPON_PRODUCED cp , USER u
     where cp.USER_NO = u.USER_NO
       and u.USER_ID =  #{value}
+      and cp.USED = 'N'
     </select>
 
 

@@ -13,7 +13,7 @@ public interface NewBookMapper {
      * 신간도서 리스트 조회
      * @return 결과 리스트
      */
-    List<BookDto> newBookList(SearchCriteria criteria);
+    List<BookDto> getNewBookList(SearchCriteria criteria);
 
     /**
      *

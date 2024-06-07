@@ -31,7 +31,7 @@
                     <span th:each="topLevelCategory : ${topLevelCategories}"
                           th:text="${topLevelCategory.name}"
                           th:data-top-category-no="${topLevelCategory.no}"
-                          class="border p-1 me-1"
+                          class="border p-1 me-1 d-inline-block mb-2"
                           id="topLevelCategory-${topLevelCategory.no}">
                     </span>
                     </div>
@@ -421,7 +421,7 @@
 
                     thirdLevelCategories.forEach(thirdLevelCategory => {
                         const $span = $("<span>")
-                            .addClass("border p-1 me-1")
+                            .addClass("border p-1 me-1 d-inline-block mb-2")
                             .text(thirdLevelCategory.name)
                             .attr("data-third-category-no", thirdLevelCategory.no)
                             .attr("id", `thirdLevelCategory-${thirdLevelCategory.no}`);

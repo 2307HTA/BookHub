@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.bookhub.main.mapper.NewBookMapper">
 
-        <select id="newBookList" parameterType="com.example.bookhub.main.dto.SearchCriteria" resultMap="bookResultMap">
+        <select id="getNewBookList" parameterType="com.example.bookhub.main.dto.SearchCriteria" resultMap="bookResultMap">
             SELECT
             B.BOOK_NO,
             B.BOOK_NAME,
@@ -99,11 +99,8 @@
         <result column="BOOK_IMAGE_COVER" property="cover"/>
         <result column="PUBLISHER_NAME" property="publisherName"/>
         <result column="CATEGORY_NAME" property="categoryName"/>
-        <collection property="authors" ofType="com.example.bookhub.main.dto.BookAuthorDto">
-            <id column="AUTHOR_NO" property="no"></id>
-            <result column="AUTHOR_NAME" property="name"></result>
-            <result column="AUTHOR_TYPE" property="type"></result>
-        </collection>
+        <result column="BOOK_AVERAGE_RATING" property="averageRating"/>
+        <result column="AUTHORS" property="authors" />
     </resultMap>
 
 

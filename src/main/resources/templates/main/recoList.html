@@ -7,7 +7,7 @@
 <div layout:fragment="content" class="container-fluid">
 
            <form class="mb-4" action="/main/recobook" method="get" id="recobook">
-                   <input type="hidden" name="pubDate" th:value="${#strings.defaultString(param.pubDate, '1')}"/>
+                   <input type="hidden" name="pubDate" th:value="${#strings.defaultString(param.pubDate, '5')}"/>
                    <input type="hidden" name="cateKeyword" th:value="${#strings.defaultString(param.cateKeyword,'1')}"/>
                    <input type="hidden" name="sort" th:value="${#strings.defaultString(param.sort, '1')}"/>
                    <input type="hidden" name="page" th:value="${#strings.defaultString(param.page, '1')}"/>
@@ -16,13 +16,12 @@
        <div class="row">
            <!-- Sidebar -->
         <div class="sidebar col-2">
-            <h5>추천도서</h5>
         </div>
         <!-- /Sidebar -->
         <!-- Main content -->
         <!--카테고리 선택 - 전체, 소설, 참고서, 사회과학 ,,, 등등등-->
            <div class="col-8 mb-5"  >
-            <h1 class="mb-3">국내도서</h1>
+            <h1 class="mb-3">추천도서</h1>
             <div>
                 <ul id="cateKeyword">
                     <a href="" data-cateKeyword="1"><span class="catebadge rounded-pill text-bg-light me-5">전체</span></a>
@@ -74,9 +73,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#" data-sort="3">평점순</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" data-sort="4">리뷰순</a>
-                        </li>
+                        <!--
+                       <li class="nav-item">
+                           <a class="nav-link" href="#" data-sort="4">리뷰순</a>
+                       </li>
+                       -->
                     </ul>
                 </div>
                     <div class="btn-group col-2" id="pubDate" >
@@ -150,7 +151,7 @@
                     </div>
                     <div >
                         <!-- 책 이미지 -->
-                        <a href="#">
+                        <a th:href="@{/product/book/detail(bookNo=${book.no})}">
                             <img th:src="${book.cover}" class="card-img-top" alt="책 사진">
                         </a>
                     </div>
@@ -160,9 +161,7 @@
                             <!-- 책 제목 -->
                             <h5 class="card-title fw-bold" th:text="${book.name}"></h5>
                             <!-- 저자 -->
-                            <div th:each="author : ${book.authors}">
-                                <p class="card-text" th:text="${author.name + ' (' + author.type + ')'}">저자</p>
-                            </div>
+                            <p th:text="${book.authors}"></p>
                             <!--출판사-->
                             <p class="card-text">
                                 <span th:text="${book.publisherName}"></span>

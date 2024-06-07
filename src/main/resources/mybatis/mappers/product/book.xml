@@ -168,4 +168,10 @@
         where
             book_no = #{bookNo}
     </update>
+
+    <select id="checkStock" parameterType="long" resultType="int">
+        select book_stock
+        from BOOK
+        where book_no = #{value}
+    </select>
 </mapper>

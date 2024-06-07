@@ -39,3 +39,9 @@ $("#btn-add-cart").click(function() {
 
     $("#book-form").attr("action", "/product/cart/add").trigger("submit");
 });
+
+
+    $('.dropdown-item').on('click', function() {
+    let newText = $(this).text();
+    $('#pubDate .pubdatebtn').text(newText);
+});

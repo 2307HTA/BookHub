@@ -85,7 +85,9 @@
                 <div class="col-12 bg-light p-3 mb-3">
                     <input type="hidden" name="page"/>
                     <div class="my-3 d-flex justify-content-between">
-                        <div class="text-left">전체: <b th:text="${paging.totalRows}">n</b> 개 조회</div>
+                        <div class="text-left">전체: <b th:text="${#numbers.formatInteger(paging.totalRows, 1, 'COMMA')}">n</b>
+                            개 조회
+                        </div>
                         <div class="d-flex">
                             <!-- 조회 개수 설정 -->
                             <select class="form-control-sm me-2" th:field="*{rows}">
@@ -143,7 +145,7 @@
                             <td th:text="${return.buyNo}">주문번호</td>
                             <td th:text="${return.userName}">주문자</td>
                             <td th:text="${return.buyCount}">주문수량</td>
-                            <td th:text="${return.price}">환불금액</td>
+                            <td th:text="${#numbers.formatInteger(return.price, 1, 'COMMA')}">환불금액</td>
                             <td>
                                 <p th:text="${#dates.format(return.returnDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
                                 <p th:text="${#dates.format(return.returnedDate, 'yyyy-MM-dd HH:mm:ss')}"></p>

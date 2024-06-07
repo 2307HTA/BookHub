@@ -87,7 +87,9 @@
                 <div class="col-12 bg-light p-3 mb-3">
                     <input type="hidden" name="page"/>
                     <div class="my-3 d-flex justify-content-between">
-                        <div class="text-left">전체: <b th:text="${paging.totalRows}">n</b> 개 조회</div>
+                        <div class="text-left">전체: <b th:text="${#numbers.formatInteger(paging.totalRows, 1, 'COMMA')}">n</b>
+                            개 조회
+                        </div>
                         <div class="d-flex">
                             <!-- 조회 개수 설정 -->
                             <select class="form-control-sm me-2" th:field="*{rows}">
@@ -158,7 +160,7 @@
                                 번호
                             </td>
                             <td>
-                                <a th:href="@{/book/detail(id=${post.no})}" th:text="${post.title}"
+                                <a th:href="@{/admin/board/notice/views(postNo=${post.no})}" th:text="${post.title}"
                                    style="text-decoration: none; color: inherit;">제목</a>
                             </td>
                             <td th:text="${post.writer}">작성자</td>

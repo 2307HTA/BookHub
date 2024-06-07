@@ -17,5 +17,5 @@ public interface BookMapper {
 
     void increaseBookViewCount(@Param("bookNo") Long bookNo);
     void returnBookStock(@Param("bookNo") long bookNo, @Param("count") int count);
-
+    int checkStock(long bookNo);
 }

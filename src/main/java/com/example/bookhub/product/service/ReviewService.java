@@ -7,7 +7,6 @@ import com.example.bookhub.user.mapper.UserMapper;
 import com.example.bookhub.user.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
@@ -16,19 +15,16 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
 
-    @Value("${review.image.save.directory}")   //@Value - 설정파일의 설정정보 값을 주입해줌
+    @Value("${review.image.save.directory.aws}")   //@Value - 설정파일의 설정정보 값을 주입해줌
     private String saveDirectory;
 
     private final ReviewMapper reviewMapper;
     private final UserMapper userMapper;
-    private static final Logger logger = LoggerFactory.getLogger(ReviewService.class);
 
     @Transactional
     public long createReview(ReviewForm reviewForm, String userId) {

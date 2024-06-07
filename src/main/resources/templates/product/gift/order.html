@@ -163,7 +163,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="unselectCoupons()">닫기</button>
                         <button type="button" class="btn btn-dark" onclick="useSelectedCoupon()">사용</button>
                     </div>
                 </div>
@@ -187,10 +187,23 @@
         let totalPointAmount = parseInt($("#total-point-amount").text());
 
         if (!isNaN(numericValue) && numericValue <= totalPointAmount) {
-
+            $("#total-point-use-amount").val(numericValue);
+            if($("#total-point-use-amount").val() === '')
+                $("#total-point-use-amount").val(0);
         } else {
             $(this).val('');
+            $("#total-point-use-amount").val(0);
         }
+
+        updateFinalPrice();
+    });
+
+    $(document).ready(function(){
+        let currentPosition = parseInt($("#card-order-total").css("top"));
+        $(window).scroll(function() {
+            let position = $(window).scrollTop();
+            $("#card-order-total").stop().animate({"top":position+currentPosition+"px"},1000);
+        });
     });
 
     function updatePrices(){
@@ -221,7 +234,18 @@
         let totalPointUseAmount = parseInt($("#total-point-use-amount").val());
         let finalPrice = totalPrice + deliveryPrice - totalBookDiscountPrice - totalCouponDiscountAmount - totalPointUseAmount;
 
-        $("#final-price").val(finalPrice);
+        if(finalPrice < 0){
+            alert("포인트, 쿠폰 할인 금액이 결제 예정 금액을 초과할 수 없습니다");
+            $("#total-point-use-amount-tmp").val('');
+            $("#total-point-use-amount").val(0);
+            $("#total-coupon-discount-amount-tmp").val('');
+            $("#total-coupon-discount-amount").val(0);
+            $("input[name=couponProducedNoList]").prop('checked', false);
+            $("#final-price").val(totalPrice + deliveryPrice - totalBookDiscountPrice);
+        }
+        else {
+            $("#final-price").val(finalPrice);
+        }
     }
 
     async function showCouponUseModal(){
@@ -248,9 +272,9 @@
                        <tr id="tr-coupon">
                             <td><input type="checkbox" class="form-check-input" name="couponProducedNoList" value="${couponProduced.couponProducedNo}" checked/></td>
                             <td>${couponProduced.coupon.name}</td>
-                            <td><span class="couponDiscountAmount">${couponProduced.coupon.price}</span>원</td>
+                            <td><span class="couponDiscountAmount">${couponProduced.lastAmount}</span>원</td>
                             <td><input name="couponDiscountAmountList"
-                            value="${couponProduced.coupon.price}" style="width: 70px;"/>원</td>
+                            value="${couponProduced.lastAmount}" style="width: 70px;"/>원</td>
                        </tr>
                 `;
         }
@@ -299,10 +323,20 @@
         updateFinalPrice();
     }
 
+    function unselectCoupons(){
+        $("input[name=couponProducedNoList]").prop('checked', false);
+    }
+
     function useTotalPoint(){
-        let totalPointAmount = $("#total-point-amount").text();
-        $("#total-point-use-amount-tmp").val(totalPointAmount);
-        $("#total-point-use-amount").val(totalPointAmount)
+        let totalPointAmount = parseInt($("#total-point-amount").text());
+        let finalPrice = parseInt($("#final-price").val());
+        if(totalPointAmount > finalPrice){
+            alert("포인트 사용 금액이 결제 예정 금액을 초과할 수 없습니다");
+        }
+        else{
+            $("#total-point-use-amount-tmp").val(totalPointAmount);
+            $("#total-point-use-amount").val(totalPointAmount);
+        }
 
         updateFinalPrice();
     }

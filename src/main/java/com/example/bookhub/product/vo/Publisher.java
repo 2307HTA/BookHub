@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class Publisher {
 
-    private long publisherNo;
+    private long publisherNo;;
     private String name;
 }

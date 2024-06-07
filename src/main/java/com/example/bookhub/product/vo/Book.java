@@ -24,5 +24,7 @@ public class Book {
     private int salesVolume;
     private float averageRating;
     private BookAuthor bookAuthor;
+    private int viewCount;
+
 
 }
