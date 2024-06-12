@@ -16,7 +16,7 @@ public class RecommendBookService {
     private final RecommendBookMapper recommendBookMapper;
 //    @Transactional(readOnly = true)
     public BookListDto recoBooks(SearchCriteria criteria) {
-        List<BookDto> newBook = recommendBookMapper.recoBookList(criteria);
+        List<BookDto> newBook = recommendBookMapper.getRecommendBookList(criteria);
 
         int totalRows = recommendBookMapper.count(criteria);
         criteria.setTotalRows(totalRows);

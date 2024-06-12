@@ -17,7 +17,7 @@ public class NewBookService {
 
 //    @Transactional(readOnly = true)
     public BookListDto newBooks(SearchCriteria criteria) {
-        List<BookDto> newBook = newBookMapper.newBookList(criteria);
+        List<BookDto> newBook = newBookMapper.getNewBookList(criteria);
 
         int totalRows = newBookMapper.count(criteria);
         criteria.setTotalRows(totalRows);

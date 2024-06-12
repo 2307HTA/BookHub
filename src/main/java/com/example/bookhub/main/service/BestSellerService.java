@@ -18,7 +18,7 @@ public class BestSellerService {
 
 //    @Transactional(readOnly = true)
     public BookListDto bestSeller(SearchCriteria criteria) {
-        List<BookDto> bestBook = bestSellerMapper.bestSeller(criteria);
+        List<BookDto> bestBook = bestSellerMapper.getBestSellerList(criteria);
         for (BookDto book : bestBook) {
             // book이 null이 아닌 경우에만 처리
             if (book != null) {
