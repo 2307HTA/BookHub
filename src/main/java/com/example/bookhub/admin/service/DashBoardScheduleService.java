@@ -20,22 +20,22 @@ public class DashBoardScheduleService {
     // LockAtLeastFor 의 값이 LockAtMostFor 값보다 크면 Exception 이 발생
 
     // 매일 아침 10시마다 어제 통계값을 계산하여 저장하기
-    @SchedulerLock(name = "yesterday_lock", lockAtLeastFor = "20s", lockAtMostFor = "50s")
-    @Scheduled(cron = "0 0 10 * * ?")
+//    @SchedulerLock(name = "yesterday_lock", lockAtLeastFor = "20s", lockAtMostFor = "50s")
+//    @Scheduled(cron = "0 0 10 * * ?")
     public void saveTotalYesterday() {
         retryLogic(dashBoardScheduleMapper::saveTotalYesterday);
     }
 
     // 매주 월요일 10시마다 지난주 값을 계산하여 저장하기
-    @SchedulerLock(name = "lastWeek_lock", lockAtLeastFor = "20s", lockAtMostFor = "50s")
-    @Scheduled(cron = "0 00 10 * * MON")
+//    @SchedulerLock(name = "lastWeek_lock", lockAtLeastFor = "20s", lockAtMostFor = "50s")
+//    @Scheduled(cron = "0 00 10 * * MON")
     public void saveTotalLastWeek() {
         retryLogic(dashBoardScheduleMapper::saveTotalYesterday);
     }
 
     // 매월 1일 오전 10시마다 지난달 값을 계산하여 저장하기
-    @SchedulerLock(name = "lastMonth_lock", lockAtLeastFor = "20s", lockAtMostFor = "50s")
-    @Scheduled(cron = "0 0 10 1 * ?")
+//    @SchedulerLock(name = "lastMonth_lock", lockAtLeastFor = "20s", lockAtMostFor = "50s")
+//    @Scheduled(cron = "0 0 10 1 * ?")
     public void saveTotalLastMonth(){
         retryLogic(dashBoardScheduleMapper::saveTotalLastMonth);
     }
