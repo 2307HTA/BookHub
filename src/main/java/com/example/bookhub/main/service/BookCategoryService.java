@@ -23,8 +23,8 @@ public class BookCategoryService {
         return bookCategory.getCategory(categoryNo);
     }
 
-    @Transactional(readOnly = true)
-    @Cacheable(value = "BookCategoryMapper.getBookCategoryList" , condition = "")
+//    @Transactional(readOnly = true)
+//    @Cacheable(value = "BookCategoryMapper.getBookCategoryList" , condition = "")
     public BookListDto getCategoryBooks(SearchCriteria criteria) {
         List<BookDto> cateBook = bookCategory.getBookCategoryList(criteria);
 

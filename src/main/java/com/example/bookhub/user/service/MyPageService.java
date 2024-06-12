@@ -146,7 +146,7 @@ public class MyPageService {
 
 
 //    @Transactional(readOnly = true)
-    @Cacheable(value = "MyPageMapper.cacheInquiries" , key = "#page", condition = "#page <= 4")
+//    @Cacheable(value = "MyPageMapper.cacheInquiries" , key = "#page", condition = "#page <= 4")
     public PageListDTO<InquiryListDTO> getCacheInquiriesList( int page) {
 
         // 사용자의 아이디로 전체 작성된 1:1문의 갯수 조회
