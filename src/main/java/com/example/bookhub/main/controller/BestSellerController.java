@@ -19,7 +19,7 @@ public class BestSellerController {
 
     @GetMapping("/main/bestseller")
     public String bestSeller(SearchCriteria searchCriteria, Model model) {
-        BookListDto dto = bestSellerService.getBestSeller(searchCriteria);
+        BookListDto dto = bestSellerService.bestSeller(searchCriteria);
         model.addAttribute("book", dto.getBooks());
         model.addAttribute("criteria", dto.getCriteria());
         return "main/bestseller.html";
