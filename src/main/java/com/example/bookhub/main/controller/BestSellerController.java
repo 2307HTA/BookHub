@@ -24,6 +24,4 @@ public class BestSellerController {
         model.addAttribute("criteria", dto.getCriteria());
         return "main/bestseller.html";
     }
-    }
-
-
+}

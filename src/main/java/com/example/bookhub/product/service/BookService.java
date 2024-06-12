@@ -26,7 +26,7 @@ public class BookService {
     }
 
 //    @Transactional(readOnly = true)
-    @Cacheable(value = "BookMapper.getAuthorByBookNo" , condition = "")
+//    @Cacheable(value = "BookMapper.getAuthorByBookNo" , condition = "")
     public List<BookAuthor> getAuthorByBookNo(long bookNo) {
         return bookMapper.getAuthorByBookNo(bookNo);
     }

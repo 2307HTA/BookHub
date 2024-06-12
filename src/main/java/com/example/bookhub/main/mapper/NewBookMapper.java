@@ -23,4 +23,3 @@ public interface NewBookMapper {
     int count(SearchCriteria criteria);
 
 }
-

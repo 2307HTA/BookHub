@@ -23,4 +23,4 @@ public class NewBookController {
         model.addAttribute("criteria", dto.getCriteria());
         return "main/newList.html";
     }
-    }
+}

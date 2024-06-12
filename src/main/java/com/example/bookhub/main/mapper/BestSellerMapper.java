@@ -21,4 +21,3 @@ public interface BestSellerMapper {
     int count(SearchCriteria criteria);
 
 }
-

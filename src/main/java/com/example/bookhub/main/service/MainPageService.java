@@ -15,7 +15,7 @@ import java.util.List;
 public class MainPageService {
     private final MainPageMapper mainPageMapper;
 
-//    @Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     public BookListDto mainBestSeller(SearchCriteria criteria) {
         List<BookDto> mainBest = mainPageMapper.getBestSeller(criteria);
 
@@ -26,7 +26,7 @@ public class MainPageService {
         return dto;
     }
 
-//    @Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     public BookListDto mainNewBook(SearchCriteria criteria) {
         List<BookDto> mainNew = mainPageMapper.getNewBook(criteria);
 
@@ -37,7 +37,7 @@ public class MainPageService {
         return dto;
     }
 
-//    @Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     public BookListDto mainBookViewCount(SearchCriteria criteria) {
         List<BookDto> mainViewCount = mainPageMapper.getBookViewCount(criteria);
 
@@ -47,7 +47,7 @@ public class MainPageService {
 
         return dto;
     }
-//    @Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     public BookListDto mainBookRecommend(SearchCriteria criteria) {
         List<BookDto> mainBookReco = mainPageMapper.getRecoBook(criteria);
 

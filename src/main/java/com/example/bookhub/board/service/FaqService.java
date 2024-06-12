@@ -25,7 +25,7 @@ public class FaqService {
      * @return
      */
 //    @Transactional(readOnly = true)
-    @Cacheable(value = "FaqMapper.findAllFaq", condition = "")
+//    @Cacheable(value = "FaqMapper.findAllFaq", condition = "")
     public FaqListDto getFaqList(int cat, String keyword, int page) {
 
         int totalCount = faqMapper.getTotalFaqCount(cat, keyword);

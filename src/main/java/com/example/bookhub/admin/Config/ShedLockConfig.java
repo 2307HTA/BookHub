@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 
 @Controller
 @EnableScheduling
-@EnableSchedulerLock(defaultLockAtLeastFor = "30s", defaultLockAtMostFor = "50s")
+//@EnableSchedulerLock(defaultLockAtLeastFor = "30s", defaultLockAtMostFor = "50s")
 public class ShedLockConfig {
 
     @Bean

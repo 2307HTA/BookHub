@@ -14,13 +14,6 @@ public interface SearchService {
 }
 
 
-    // BookListDto keywordSearch(SearchCriteria searchCriteria);
-   // List<SearchRankResponseDto> searchRankList();
-    //void updateSearchRanking();
-
-
-
-
-
-
-
+// BookListDto keywordSearch(SearchCriteria searchCriteria);
+// List<SearchRankResponseDto> searchRankList();
+//void updateSearchRanking();
