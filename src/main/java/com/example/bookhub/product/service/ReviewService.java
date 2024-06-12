@@ -20,7 +20,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class ReviewService {
 
-    @Value("${review.image.save.directory.aws}")   //@Value - 설정파일의 설정정보 값을 주입해줌
+    @Value("${review.image.save.directory}")   //@Value - 설정파일의 설정정보 값을 주입해줌
     private String saveDirectory;
 
     private final ReviewMapper reviewMapper;

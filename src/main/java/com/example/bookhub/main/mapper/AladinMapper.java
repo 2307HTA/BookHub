@@ -25,5 +25,3 @@ public interface AladinMapper {
 
     void insertBookImage(Map<String, Object> img);
 }
-
-

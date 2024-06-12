@@ -157,6 +157,3 @@ public class AladinService {
     }
 
 }
-
-
-
