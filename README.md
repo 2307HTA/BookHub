@@ -12,6 +12,9 @@
 + AWS EC2와 Jenkins를 이용한 배포 
 ---
 
+**UPDATE**
+FAQ LIST의 캐싱처리 2024. 05
+Jenkins 빌드를 위한 코드 수정, Properties 설정 수정 2024. 06
 
 
 
